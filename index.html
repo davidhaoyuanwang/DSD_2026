@@ -2,98 +2,733 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Survey & Video Site</title>
+  <title>Don't Sugarcoat Diabetes - UT Health San Antonio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* --- layout & typography --- */
-    body {font-family: system-ui, sans-serif; margin: 0;}
-    h1, h2 {text-align: center;}
-    nav   {text-align: center; margin: 1rem 0;}
-    button{padding: .6rem 1.2rem; margin: .3rem; cursor: pointer;}
-    iframe{width: 100%; height: 1200px; border: 0;}
+    :root {
+      --primary-orange: #F26522;
+      --primary-blue: #003366;
+      --light-blue: #4A90E2;
+      --accent-teal: #00A0B0;
+      --warm-gray: #F5F5F5;
+      --text-dark: #2C3E50;
+      --text-light: #7F8C8D;
+      --white: #FFFFFF;
+      --shadow: rgba(0, 51, 102, 0.15);
+      --gradient-primary: linear-gradient(135deg, #F26522 0%, #E55A1C 100%);
+      --gradient-secondary: linear-gradient(135deg, #003366 0%, #004080 100%);
+    }
 
-    /* --- section switching --- */
-    section      {display: none; padding: 2rem;}
-    section.active {display: block;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #F5F5F5 0%, #E8F4F8 100%);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Background slideshow */
+    .background-slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 51, 102, 0.7) 0%,
+        rgba(0, 51, 102, 0.4) 40%,
+        rgba(0, 51, 102, 0.3) 60%,
+        rgba(0, 51, 102, 0.6) 100%
+      );
+    }
+
+    /* Header styling */
+    .header {
+      background: var(--gradient-secondary);
+      padding: 1rem 0;
+      box-shadow: 0 4px 20px var(--shadow);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .header h1 {
+      color: var(--white);
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .header .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Main content container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Section styling */
+    section {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Language selection page */
+    .lang-select-content {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px var(--shadow);
+      margin: 2rem auto;
+      max-width: 600px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-select-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .lang-select-content h2 {
+      font-size: 2rem;
+      color: var(--primary-blue);
+      margin-bottom: 3rem;
+      font-weight: 600;
+    }
+
+    .language-buttons {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .lang-button {
+      background: var(--gradient-primary);
+      color: var(--white);
+      border: none;
+      padding: 1.5rem 3rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(242, 101, 34, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-width: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lang-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .lang-button:hover::before {
+      left: 100%;
+    }
+
+    .lang-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(242, 101, 34, 0.4);
+    }
+
+    .lang-button:active {
+      transform: translateY(-1px);
+    }
+
+    /* Navigation styling */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .nav-button {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 51, 102, 0.1);
+    }
+
+    .nav-button:hover {
+      background: var(--primary-blue);
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    .nav-button.primary {
+      background: var(--gradient-primary);
+      color: var(--white);
+      border-color: var(--primary-orange);
+    }
+
+    .nav-button.primary:hover {
+      background: var(--primary-orange);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(242, 101, 34, 0.3);
+    }
+
+    /* Form section styling */
+    .form-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px var(--shadow);
+      overflow: hidden;
+      margin: 2rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    .form-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .form-header {
+      background: var(--gradient-secondary);
+      color: var(--white);
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .form-header h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    iframe {
+      width: 100%;
+      height: 1200px;
+      border: 0;
+      background: var(--white);
+    }
+
+    /* Video section styling */
+    .video-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px var(--shadow);
+      padding: 4rem 2rem;
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .video-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .video-section h2 {
+      font-size: 2rem;
+      color: var(--primary-blue);
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .video-placeholder {
+      background: var(--warm-gray);
+      height: 400px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      border: 2px dashed var(--light-blue);
+      margin: 2rem 0;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .header .subtitle {
+        font-size: 1rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .lang-select-content {
+        padding: 2rem 1rem;
+        margin: 1rem;
+      }
+
+      .lang-select-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .language-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .lang-button {
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      iframe {
+        height: 800px;
+      }
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--light-blue);
+      border-radius: 50%;
+      border-top-color: var(--primary-orange);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Accessibility improvements */
+    .nav-button:focus,
+    .lang-button:focus {
+      outline: 3px solid var(--accent-teal);
+      outline-offset: 2px;
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Slideshow fade animation */
+    @keyframes slideIn {
+      0% { opacity: 0; transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .slide.fade-in {
+      animation: slideIn 2s ease-out;
+    }
   </style>
 </head>
 <body>
+  <!-- Background slideshow -->
+  <div class="background-slideshow" id="backgroundSlideshow">
+    <!-- Slides will be dynamically added here -->
+  </div>
 
-  <!--‑‑ Language selector ‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑-->
-  <section id="lang-select" class="active">
-    <h1>Select Language / Seleccione Idioma</h1>
-    <div style="text-align:center">
-      <button onclick="showSection('english-form')">English</button>
-      <button onclick="showSection('spanish-form')">Español</button>
-    </div>
-  </section>
+  <div class="header">
+    <h1>Don't Sugarcoat Diabetes!</h1>
+    <p class="subtitle">UT Health San Antonio Research Study</p>
+  </div>
 
-  <!--‑‑ English ‑ Form page ‑‑-->
-  <section id="english-form">
-    <nav>
-      <button onclick="showSection('lang-select')">⬅ Language Select</button>
-      <button onclick="showSection('english-video')">Next ➡</button>
-    </nav>
+  <div class="container">
+    <!-- Language selector -->
+    <section id="lang-select" class="active">
+      <div class="lang-select-content">
+        <h2>Select Your Language:</h2>
+        <div class="language-buttons">
+          <button class="lang-button" onclick="showSection('english-form')">
+            English
+          </button>
+          <button class="lang-button" onclick="showSection('spanish-form')">
+            Español
+          </button>
+        </div>
+      </div>
+    </section>
 
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
-      loading="lazy">
-        Loading…
-    </iframe>
-  </section>
+    <!-- English - Form page -->
+    <section id="english-form">
+      <nav class="nav">
+        <button class="nav-button" onclick="showSection('lang-select')">
+          ← Language Select
+        </button>
+        <button class="nav-button primary" onclick="showSection('english-video')">
+          Next →
+        </button>
+      </nav>
+      <div class="form-section">
+        <div class="form-header">
+          <h2>Research Survey - English</h2>
+        </div>
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+          loading="lazy">
+          <div class="loading"></div> Loading survey...
+        </iframe>
+      </div>
+    </section>
 
-  <!--‑‑ English ‑ Video placeholder ‑‑-->
-  <section id="english-video">
-    <nav>
-      <button onclick="showSection('english-form')">⬅ Back to Form</button>
-      <button onclick="showSection('lang-select')">Language Select</button>
-    </nav>
-    <h2>Video will go here</h2>
-  </section>
+    <!-- English - Video placeholder -->
+    <section id="english-video">
+      <nav class="nav">
+        <button class="nav-button" onclick="showSection('english-form')">
+          ← Back to Form
+        </button>
+        <button class="nav-button" onclick="showSection('lang-select')">
+          Language Select
+        </button>
+      </nav>
+      <div class="video-section">
+        <h2>Educational Video</h2>
+        <div class="video-placeholder">
+          Video content will be displayed here
+        </div>
+        <p style="color: var(--text-light); font-style: italic;">
+          Thank you for completing the survey. The educational video will be available shortly.
+        </p>
+      </div>
+    </section>
 
-  <!--‑‑ Spanish ‑ Form page ‑‑-->
-  <section id="spanish-form">
-    <nav>
-      <button onclick="showSection('lang-select')">⬅ Seleccionar Idioma</button>
-      <button onclick="showSection('spanish-video')">Siguiente ➡</button>
-    </nav>
+    <!-- Spanish - Form page -->
+    <section id="spanish-form">
+      <nav class="nav">
+        <button class="nav-button" onclick="showSection('lang-select')">
+          ← Seleccionar Idioma
+        </button>
+        <button class="nav-button primary" onclick="showSection('spanish-video')">
+          Siguiente →
+        </button>
+      </nav>
+      <div class="form-section">
+        <div class="form-header">
+          <h2>Encuesta de Investigación - Español</h2>
+        </div>
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+          loading="lazy">
+          <div class="loading"></div> Cargando encuesta...
+        </iframe>
+      </div>
+    </section>
 
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
-      loading="lazy">
-        Cargando…
-    </iframe>
-  </section>
+    <!-- Spanish - Video placeholder -->
+    <section id="spanish-video">
+      <nav class="nav">
+        <button class="nav-button" onclick="showSection('spanish-form')">
+          ← Volver al Formulario
+        </button>
+        <button class="nav-button" onclick="showSection('lang-select')">
+          Seleccionar Idioma
+        </button>
+      </nav>
+      <div class="video-section">
+        <h2>Video Educativo</h2>
+        <div class="video-placeholder">
+          El contenido del video se mostrará aquí
+        </div>
+        <p style="color: var(--text-light); font-style: italic;">
+          Gracias por completar la encuesta. El video educativo estará disponible en breve.
+        </p>
+      </div>
+    </section>
+  </div>
 
-  <!--‑‑ Spanish ‑ Video placeholder ‑‑-->
-  <section id="spanish-video">
-    <nav>
-      <button onclick="showSection('spanish-form')">⬅ Volver al Formulario</button>
-      <button onclick="showSection('lang-select')">Seleccionar Idioma</button>
-    </nav>
-    <h2>Video will go here</h2>
-  </section>
-
-  <!--‑‑ Simple client‑side “router” ‑‑-->
   <script>
-    function showSection(id) {
-      // hide all, then show requested
-      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      // update URL hash so browser back/forward works
-      location.hash = id;
+    let currentSlide = 0;
+    let slideInterval;
+
+    // Initialize slideshow
+    function initializeSlideshow() {
+      const slideshowContainer = document.getElementById('backgroundSlideshow');
+      
+      // Define image paths - UPDATE THESE PATHS to match your GitHub repository structure
+      const imagePaths = [
+        './images/image1.jpg',  // Update this path to where you upload the images
+        './images/image2.jpg',  // For example: './assets/image1.jpg' or just 'image1.jpg'
+        './images/image3.jpg',  // if images are in the root directory
+        './images/image4.jpg',
+        './images/image5.jpg'
+      ];
+      
+      let loadedCount = 0;
+      let failedCount = 0;
+      
+      imagePaths.forEach((imagePath, index) => {
+        const img = new Image();
+        
+        img.onload = function() {
+          loadedCount++;
+          const slide = document.createElement('div');
+          slide.className = 'slide';
+          slide.style.backgroundImage = `url(${imagePath})`;
+          if (index === 0) slide.classList.add('active');
+          slideshowContainer.appendChild(slide);
+          console.log(`Successfully loaded: ${imagePath}`);
+          
+          // Start slideshow when all images are processed
+          if (loadedCount + failedCount === imagePaths.length) {
+            if (loadedCount > 0) {
+              console.log(`Using ${loadedCount} GitHub images for slideshow`);
+              startSlideshow();
+            } else {
+              console.log('No images could be loaded, using themed gradients');
+              initializeFallbackSlideshow();
+            }
+          }
+        };
+        
+        img.onerror = function() {
+          failedCount++;
+          console.log(`Failed to load: ${imagePath}`);
+          
+          // Start slideshow when all images are processed
+          if (loadedCount + failedCount === imagePaths.length) {
+            if (loadedCount > 0) {
+              console.log(`Using ${loadedCount} GitHub images for slideshow`);
+              startSlideshow();
+            } else {
+              console.log('No images could be loaded, using themed gradients');
+              initializeFallbackSlideshow();
+            }
+          }
+        };
+        
+        img.src = imagePath;
+      });
     }
 
-    // On initial load, honour the hash (if any)
+    function initializeFallbackSlideshow() {
+      const slideshowContainer = document.getElementById('backgroundSlideshow');
+      // UT Health San Antonio themed gradient backgrounds
+      const fallbackSlides = [
+        'linear-gradient(135deg, #003366 0%, #4A90E2 100%)', // UT Blue to Light Blue
+        'linear-gradient(135deg, #F26522 0%, #E55A1C 100%)', // UT Orange gradient
+        'linear-gradient(135deg, #00A0B0 0%, #003366 100%)', // Teal to UT Blue
+        'linear-gradient(135deg, #2C3E50 0%, #4A90E2 100%)', // Dark blue to light blue
+        'linear-gradient(135deg, #003366 0%, #00A0B0 100%)'  // UT Blue to Teal
+      ];
+      
+      fallbackSlides.forEach((gradient, index) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        slide.style.background = gradient;
+        if (index === 0) slide.classList.add('active');
+        slideshowContainer.appendChild(slide);
+      });
+      
+      startSlideshow();
+    }
+
+    function startSlideshow() {
+      const slides = document.querySelectorAll('.slide');
+      if (slides.length <= 1) return;
+      
+      slideInterval = setInterval(() => {
+        // Fade out current slide
+        slides[currentSlide].classList.remove('active');
+        
+        // Move to next slide
+        currentSlide = (currentSlide + 1) % slides.length;
+        
+        // Fade in new slide
+        slides[currentSlide].classList.add('active');
+      }, 6000); // Change every 6 seconds
+    }
+
+    function showSection(id) {
+      // Add fade out effect to current section
+      const currentSection = document.querySelector('section.active');
+      if (currentSection) {
+        currentSection.style.opacity = '0';
+        currentSection.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          // Hide all sections and show requested one
+          document.querySelectorAll('section').forEach(s => {
+            s.classList.remove('active');
+            s.style.opacity = '';
+            s.style.transform = '';
+          });
+          
+          const targetSection = document.getElementById(id);
+          if (targetSection) {
+            targetSection.classList.add('active');
+            targetSection.style.opacity = '0';
+            targetSection.style.transform = 'translateY(20px)';
+            
+            // Animate in
+            setTimeout(() => {
+              targetSection.style.opacity = '1';
+              targetSection.style.transform = 'translateY(0)';
+            }, 50);
+          }
+          
+          // Update URL hash
+          history.pushState(null, null, `#${id}`);
+        }, 200);
+      } else {
+        // First load - no transition needed
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        history.pushState(null, null, `#${id}`);
+      }
+    }
+
+    // Handle initial load
     window.addEventListener('load', () => {
+      initializeSlideshow();
+      
       const id = location.hash.replace('#', '');
-      if (id && document.getElementById(id)) showSection(id);
+      if (id && document.getElementById(id)) {
+        showSection(id);
+      }
     });
 
-    // Handle manual hash changes
-    window.addEventListener('hashchange', () => {
-      const id = location.hash.replace('#', '');
-      if (id && document.getElementById(id)) showSection(id);
+    // Handle browser back/forward
+    window.addEventListener('popstate', () => {
+      const id = location.hash.replace('#', '') || 'lang-select';
+      if (document.getElementById(id)) {
+        showSection(id);
+      }
+    });
+
+    // Add smooth scrolling for better UX
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add loading states for iframe
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => {
+        iframe.addEventListener('load', function() {
+          this.style.opacity = '1';
+        });
+      });
     });
   </script>
 </body>
