@@ -772,7 +772,7 @@
         './images/image1.jpg',
         './images/image2.jpg',
         './images/image3.jpg',
-        './images/video1.mp4',
+        'https://github.com/davidhaoyuanwang/DSD_2026/raw/main/images/video1.mp4', // LFS URL
         './images/image5.jpg'
       ];
       
@@ -790,7 +790,7 @@
       }
       
       mediaPaths.forEach((mediaPath, index) => {
-        const isVideo = mediaPath.endsWith('.mp4');
+        const isVideo = mediaPath.includes('video1.mp4');
         
         if (isVideo) {
           const video = document.createElement('video');
@@ -798,6 +798,7 @@
           video.loop = true;
           video.autoplay = true;
           video.playsInline = true;
+          video.preload = 'metadata';
           
           video.onloadeddata = function() {
             loadedCount++;
@@ -806,11 +807,13 @@
             slide.appendChild(video);
             if (index === 0) slide.classList.add('active');
             slideshowContainer.appendChild(slide);
+            console.log('LFS video loaded successfully for slideshow');
             checkAllLoaded();
           };
           
           video.onerror = function() {
             failedCount++;
+            console.log('Failed to load LFS video for slideshow');
             checkAllLoaded();
           };
           
@@ -872,23 +875,31 @@
     function loadVideoForSection() {
       const englishContainer = document.getElementById('english-video-container');
       const spanishContainer = document.getElementById('spanish-video-container');
-      const videoPath = './images/video1.mp4';
+      // Use GitHub LFS raw URL for video sections
+      const videoPath = 'https://github.com/davidhaoyuanwang/DSD_2026/raw/main/images/video1.mp4';
       
       [englishContainer, spanishContainer].forEach(container => {
         const video = document.createElement('video');
         video.controls = true;
         video.width = "100%";
         video.style.maxHeight = "500px";
+        video.preload = 'metadata';
         
         video.onloadeddata = function() {
-          console.log('Video loaded for section');
+          console.log('LFS video loaded successfully for video section');
         };
         
         video.onerror = function() {
+          console.log('Failed to load LFS video for video section, showing placeholder');
           container.innerHTML = '<div class="video-placeholder">Video will be displayed here once uploaded</div>';
         };
         
-        video.src = videoPath;
+        // Add multiple source formats for better compatibility
+        const source = document.createElement('source');
+        source.src = videoPath;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        
         container.appendChild(video);
       });
     }
