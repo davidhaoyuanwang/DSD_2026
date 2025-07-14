@@ -768,11 +768,11 @@
     // Initialize slideshow
     function initializeSlideshow() {
       const slideshowContainer = document.getElementById('backgroundSlideshow');
+      // Only include images in the background slideshow, no video
       const mediaPaths = [
         './images/image1.jpg',
         './images/image2.jpg',
         './images/image3.jpg',
-        'https://github.com/davidhaoyuanwang/DSD_2026/raw/main/images/video1.mp4', // LFS URL
         './images/image5.jpg'
       ];
       
@@ -790,54 +790,26 @@
       }
       
       mediaPaths.forEach((mediaPath, index) => {
-        const isVideo = mediaPath.includes('video1.mp4');
+        const img = new Image();
         
-        if (isVideo) {
-          const video = document.createElement('video');
-          video.muted = true;
-          video.loop = true;
-          video.autoplay = true;
-          video.playsInline = true;
-          video.preload = 'metadata';
-          
-          video.onloadeddata = function() {
-            loadedCount++;
-            const slide = document.createElement('div');
-            slide.className = 'slide video-slide';
-            slide.appendChild(video);
-            if (index === 0) slide.classList.add('active');
-            slideshowContainer.appendChild(slide);
-            console.log('LFS video loaded successfully for slideshow');
-            checkAllLoaded();
-          };
-          
-          video.onerror = function() {
-            failedCount++;
-            console.log('Failed to load LFS video for slideshow');
-            checkAllLoaded();
-          };
-          
-          video.src = mediaPath;
-        } else {
-          const img = new Image();
-          
-          img.onload = function() {
-            loadedCount++;
-            const slide = document.createElement('div');
-            slide.className = 'slide';
-            slide.style.backgroundImage = 'url(' + mediaPath + ')';
-            if (index === 0) slide.classList.add('active');
-            slideshowContainer.appendChild(slide);
-            checkAllLoaded();
-          };
-          
-          img.onerror = function() {
-            failedCount++;
-            checkAllLoaded();
-          };
-          
-          img.src = mediaPath;
-        }
+        img.onload = function() {
+          loadedCount++;
+          const slide = document.createElement('div');
+          slide.className = 'slide';
+          slide.style.backgroundImage = 'url(' + mediaPath + ')';
+          if (index === 0) slide.classList.add('active');
+          slideshowContainer.appendChild(slide);
+          console.log('Successfully loaded image: ' + mediaPath);
+          checkAllLoaded();
+        };
+        
+        img.onerror = function() {
+          failedCount++;
+          console.log('Failed to load image: ' + mediaPath);
+          checkAllLoaded();
+        };
+        
+        img.src = mediaPath;
       });
     }
 
