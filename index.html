@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Survey & Video Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* --- layout & typography --- */
+    body {font-family: system-ui, sans-serif; margin: 0;}
+    h1, h2 {text-align: center;}
+    nav   {text-align: center; margin: 1rem 0;}
+    button{padding: .6rem 1.2rem; margin: .3rem; cursor: pointer;}
+    iframe{width: 100%; height: 1200px; border: 0;}
+
+    /* --- section switching --- */
+    section      {display: none; padding: 2rem;}
+    section.active {display: block;}
+  </style>
+</head>
+<body>
+
+  <!--‑‑ Language selector ‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑‑-->
+  <section id="lang-select" class="active">
+    <h1>Select Language / Seleccione Idioma</h1>
+    <div style="text-align:center">
+      <button onclick="showSection('english-form')">English</button>
+      <button onclick="showSection('spanish-form')">Español</button>
+    </div>
+  </section>
+
+  <!--‑‑ English ‑ Form page ‑‑-->
+  <section id="english-form">
+    <nav>
+      <button onclick="showSection('lang-select')">⬅ Language Select</button>
+      <button onclick="showSection('english-video')">Next ➡</button>
+    </nav>
+
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+      loading="lazy">
+        Loading…
+    </iframe>
+  </section>
+
+  <!--‑‑ English ‑ Video placeholder ‑‑-->
+  <section id="english-video">
+    <nav>
+      <button onclick="showSection('english-form')">⬅ Back to Form</button>
+      <button onclick="showSection('lang-select')">Language Select</button>
+    </nav>
+    <h2>Video will go here</h2>
+  </section>
+
+  <!--‑‑ Spanish ‑ Form page ‑‑-->
+  <section id="spanish-form">
+    <nav>
+      <button onclick="showSection('lang-select')">⬅ Seleccionar Idioma</button>
+      <button onclick="showSection('spanish-video')">Siguiente ➡</button>
+    </nav>
+
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+      loading="lazy">
+        Cargando…
+    </iframe>
+  </section>
+
+  <!--‑‑ Spanish ‑ Video placeholder ‑‑-->
+  <section id="spanish-video">
+    <nav>
+      <button onclick="showSection('spanish-form')">⬅ Volver al Formulario</button>
+      <button onclick="showSection('lang-select')">Seleccionar Idioma</button>
+    </nav>
+    <h2>Video will go here</h2>
+  </section>
+
+  <!--‑‑ Simple client‑side “router” ‑‑-->
+  <script>
+    function showSection(id) {
+      // hide all, then show requested
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      // update URL hash so browser back/forward works
+      location.hash = id;
+    }
+
+    // On initial load, honour the hash (if any)
+    window.addEventListener('load', () => {
+      const id = location.hash.replace('#', '');
+      if (id && document.getElementById(id)) showSection(id);
+    });
+
+    // Handle manual hash changes
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#', '');
+      if (id && document.getElementById(id)) showSection(id);
+    });
+  </script>
+</body>
+</html>
