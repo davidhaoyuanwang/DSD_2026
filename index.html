@@ -63,16 +63,6 @@
       opacity: 1;
     }
 
-    .slide.video-slide {
-      background: none;
-    }
-
-    .slide.video-slide video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .slide::after {
       content: '';
       position: absolute;
@@ -165,8 +155,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Language selection page */
-    .lang-select-content {
+    /* Start page */
+    .start-content {
       text-align: center;
       padding: 4rem 2rem;
       background: rgba(255, 255, 255, 0.95);
@@ -180,7 +170,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .lang-select-content::before {
+    .start-content::before {
       content: '';
       position: absolute;
       top: 0;
@@ -190,21 +180,14 @@
       background: var(--gradient-primary);
     }
 
-    .lang-select-content h2 {
+    .start-content h2 {
       font-size: 2rem;
       color: var(--primary-blue);
       margin-bottom: 3rem;
       font-weight: 600;
     }
 
-    .language-buttons {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .lang-button {
+    .start-button {
       background: var(--gradient-primary);
       color: var(--white);
       border: none;
@@ -217,12 +200,12 @@
       box-shadow: 0 6px 20px rgba(242, 101, 34, 0.3);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      min-width: 180px;
+      min-width: 250px;
       position: relative;
       overflow: hidden;
     }
 
-    .lang-button::before {
+    .start-button::before {
       content: '';
       position: absolute;
       top: 0;
@@ -233,16 +216,16 @@
       transition: left 0.5s ease;
     }
 
-    .lang-button:hover::before {
+    .start-button:hover::before {
       left: 100%;
     }
 
-    .lang-button:hover {
+    .start-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 30px rgba(242, 101, 34, 0.4);
     }
 
-    .lang-button:active {
+    .start-button:active {
       transform: translateY(-1px);
     }
 
@@ -455,23 +438,17 @@
         padding: 1rem;
       }
 
-      .lang-select-content {
+      .start-content {
         padding: 2rem 1rem;
         margin: 1rem;
       }
 
-      .lang-select-content h2 {
+      .start-content h2 {
         font-size: 1.5rem;
         margin-bottom: 2rem;
       }
 
-      .language-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .lang-button {
+      .start-button {
         width: 100%;
         max-width: 300px;
       }
@@ -516,7 +493,7 @@
 
     /* Accessibility improvements */
     .nav-button:focus,
-    .lang-button:focus {
+    .start-button:focus {
       outline: 3px solid var(--accent-teal);
       outline-offset: 2px;
     }
@@ -524,16 +501,6 @@
     /* Smooth scrolling */
     html {
       scroll-behavior: smooth;
-    }
-
-    /* Slideshow fade animation */
-    @keyframes slideIn {
-      0% { opacity: 0; transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .slide.fade-in {
-      animation: slideIn 2s ease-out;
     }
   </style>
 </head>
@@ -553,34 +520,29 @@
   </div>
 
   <div class="container">
-    <!-- Language selector -->
-    <section id="lang-select" class="active">
-      <div class="lang-select-content">
-        <h2>Select Your Language:</h2>
-        <div class="language-buttons">
-          <button class="lang-button" onclick="showSection('english-form')">
-            English
-          </button>
-          <button class="lang-button" onclick="showSection('spanish-form')">
-            Español
-          </button>
-        </div>
+    <!-- Start page -->
+    <section id="start-page" class="active">
+      <div class="start-content">
+        <h2>Welcome!</h2>
+        <button class="start-button" onclick="showSection('form-page')">
+          Push To Get Started!
+        </button>
       </div>
     </section>
 
-    <!-- English - Form page -->
-    <section id="english-form">
+    <!-- Form page -->
+    <section id="form-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('lang-select')">
-          ← Language Select
+        <button class="nav-button" onclick="showSection('start-page')">
+          ← Back
         </button>
-        <button class="nav-button primary" onclick="showSection('english-video')">
+        <button class="nav-button primary" onclick="showSection('video-page')">
           Next →
         </button>
       </nav>
       <div class="form-section">
         <div class="form-header">
-          <h2>Diabetes Survey - English</h2>
+          <h2>Diabetes Survey</h2>
         </div>
         <iframe
           src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUMEhDUFU0TzZGWlhaWEowVEtGUFk4RU9JSC4u"
@@ -590,19 +552,19 @@
       </div>
     </section>
 
-    <!-- English - Video page -->
-    <section id="english-video">
+    <!-- Video page -->
+    <section id="video-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('english-form')">
+        <button class="nav-button" onclick="showSection('form-page')">
           ← Back to Survey
         </button>
-        <button class="nav-button primary" onclick="showSection('english-post-video')">
+        <button class="nav-button primary" onclick="showSection('post-video-page')">
           Next →
         </button>
       </nav>
       <div class="video-section">
         <h2>Educational Video</h2>
-        <div class="video-container" id="english-video-container">
+        <div class="video-container" id="video-container">
           <!-- Video will be loaded here if available -->
         </div>
         <p style="color: var(--text-light); font-style: italic; margin-top: 1rem;">
@@ -611,19 +573,19 @@
       </div>
     </section>
 
-    <!-- English - Post-video form -->
-    <section id="english-post-video">
+    <!-- Post-video form -->
+    <section id="post-video-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('english-video')">
+        <button class="nav-button" onclick="showSection('video-page')">
           ← Back to Video
         </button>
-        <button class="nav-button primary" onclick="showSection('english-completion')">
+        <button class="nav-button primary" onclick="showSection('completion-page')">
           Next →
         </button>
       </nav>
       <div class="form-section">
         <div class="form-header">
-          <h2>Post-Video Survey - English</h2>
+          <h2>Post-Video Survey</h2>
         </div>
         <iframe
           src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUNkNPSkY2NFFRUDM3N0Q5UlAwRk41MldCVi4u"
@@ -633,94 +595,16 @@
       </div>
     </section>
 
-    <!-- English - Completion page -->
-    <section id="english-completion">
+    <!-- Completion page -->
+    <section id="completion-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('english-post-video')">
+        <button class="nav-button" onclick="showSection('post-video-page')">
           ← Back to Survey
         </button>
       </nav>
       <div class="completion-section">
         <h2>Congratulations!</h2>
         <p>You can exit the website!</p>
-      </div>
-    </section>
-
-    <!-- Spanish - Form page -->
-    <section id="spanish-form">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('lang-select')">
-          ← Seleccionar Idioma
-        </button>
-        <button class="nav-button primary" onclick="showSection('spanish-video')">
-          Siguiente →
-        </button>
-      </nav>
-      <div class="form-section">
-        <div class="form-header">
-          <h2>Encuesta de Diabetes - Español</h2>
-        </div>
-        <iframe
-          src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUMEhDUFU0TzZGWlhaWEowVEtGUFk4RU9JSC4u"
-          loading="lazy">
-          <div class="loading"></div> Cargando encuesta...
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Spanish - Video page -->
-    <section id="spanish-video">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('spanish-form')">
-          ← Volver a la Encuesta
-        </button>
-        <button class="nav-button primary" onclick="showSection('spanish-post-video')">
-          Siguiente →
-        </button>
-      </nav>
-      <div class="video-section">
-        <h2>Video Educativo</h2>
-        <div class="video-container" id="spanish-video-container">
-          <!-- Video will be loaded here if available -->
-        </div>
-        <p style="color: var(--text-light); font-style: italic; margin-top: 1rem;">
-          Por favor, vea el video educativo de arriba, luego proceda a la siguiente sección.
-        </p>
-      </div>
-    </section>
-
-    <!-- Spanish - Post-video form -->
-    <section id="spanish-post-video">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('spanish-video')">
-          ← Volver al Video
-        </button>
-        <button class="nav-button primary" onclick="showSection('spanish-completion')">
-          Siguiente →
-        </button>
-      </nav>
-      <div class="form-section">
-        <div class="form-header">
-          <h2>Encuesta Post-Video - Español</h2>
-        </div>
-        <iframe
-          src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUNkNPSkY2NFFRUDM3N0Q5UlAwRk41MldCVi4u"
-          loading="lazy">
-          <div class="loading"></div> Cargando encuesta...
-        </iframe>
-      </div>
-    </section>
-
-    <!-- Spanish - Completion page -->
-    <section id="spanish-completion">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('spanish-post-video')">
-          ← Volver a la Encuesta
-        </button>
-      </nav>
-      <div class="completion-section">
-        <h2>¡Felicitaciones!</h2>
-        <p>¡Puedes salir del sitio web!</p>
       </div>
     </section>
   </div>
@@ -730,7 +614,7 @@
     let currentSlide = 0;
     let slideInterval;
 
-    // Main function to show sections - MUST BE FIRST
+    // Main function to show sections
     function showSection(id) {
       const currentSection = document.querySelector('section.active');
       if (currentSection) {
@@ -768,7 +652,6 @@
     // Initialize slideshow
     function initializeSlideshow() {
       const slideshowContainer = document.getElementById('backgroundSlideshow');
-      // Only include images in the background slideshow, no video
       const mediaPaths = [
         './images/image1.jpg',
         './images/image2.jpg',
@@ -799,13 +682,11 @@
           slide.style.backgroundImage = 'url(' + mediaPath + ')';
           if (index === 0) slide.classList.add('active');
           slideshowContainer.appendChild(slide);
-          console.log('Successfully loaded image: ' + mediaPath);
           checkAllLoaded();
         };
         
         img.onerror = function() {
           failedCount++;
-          console.log('Failed to load image: ' + mediaPath);
           checkAllLoaded();
         };
         
@@ -845,35 +726,25 @@
     }
 
     function loadVideoForSection() {
-      const englishContainer = document.getElementById('english-video-container');
-      const spanishContainer = document.getElementById('spanish-video-container');
-      // Use GitHub LFS raw URL for video sections
+      const videoContainer = document.getElementById('video-container');
       const videoPath = 'https://github.com/davidhaoyuanwang/DSD_2026/raw/main/images/video1.mp4';
       
-      [englishContainer, spanishContainer].forEach(container => {
-        const video = document.createElement('video');
-        video.controls = true;
-        video.width = "100%";
-        video.style.maxHeight = "500px";
-        video.preload = 'metadata';
-        
-        video.onloadeddata = function() {
-          console.log('LFS video loaded successfully for video section');
-        };
-        
-        video.onerror = function() {
-          console.log('Failed to load LFS video for video section, showing placeholder');
-          container.innerHTML = '<div class="video-placeholder">Video will be displayed here once uploaded</div>';
-        };
-        
-        // Add multiple source formats for better compatibility
-        const source = document.createElement('source');
-        source.src = videoPath;
-        source.type = 'video/mp4';
-        video.appendChild(source);
-        
-        container.appendChild(video);
-      });
+      const video = document.createElement('video');
+      video.controls = true;
+      video.width = "100%";
+      video.style.maxHeight = "500px";
+      video.preload = 'metadata';
+      
+      video.onerror = function() {
+        videoContainer.innerHTML = '<div class="video-placeholder">Video will be displayed here once uploaded</div>';
+      };
+      
+      const source = document.createElement('source');
+      source.src = videoPath;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      
+      videoContainer.appendChild(video);
     }
 
     // Event listeners
@@ -888,7 +759,7 @@
     });
 
     window.addEventListener('popstate', () => {
-      const id = location.hash.replace('#', '') || 'lang-select';
+      const id = location.hash.replace('#', '') || 'start-page';
       if (document.getElementById(id)) {
         showSection(id);
       }
