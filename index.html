@@ -155,8 +155,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Language selection page */
-    .lang-select-content {
+    /* Start page */
+    .start-content {
       text-align: center;
       padding: 4rem 2rem;
       background: rgba(255, 255, 255, 0.95);
@@ -170,7 +170,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .lang-select-content::before {
+    .start-content::before {
       content: '';
       position: absolute;
       top: 0;
@@ -180,21 +180,14 @@
       background: var(--gradient-primary);
     }
 
-    .lang-select-content h2 {
+    .start-content h2 {
       font-size: 2rem;
       color: var(--primary-blue);
       margin-bottom: 3rem;
       font-weight: 600;
     }
 
-    .language-buttons {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .lang-button {
+    .start-button {
       background: var(--gradient-primary);
       color: var(--white);
       border: none;
@@ -207,12 +200,12 @@
       box-shadow: 0 6px 20px rgba(242, 101, 34, 0.3);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      min-width: 180px;
+      min-width: 250px;
       position: relative;
       overflow: hidden;
     }
 
-    .lang-button::before {
+    .start-button::before {
       content: '';
       position: absolute;
       top: 0;
@@ -223,16 +216,16 @@
       transition: left 0.5s ease;
     }
 
-    .lang-button:hover::before {
+    .start-button:hover::before {
       left: 100%;
     }
 
-    .lang-button:hover {
+    .start-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 30px rgba(242, 101, 34, 0.4);
     }
 
-    .lang-button:active {
+    .start-button:active {
       transform: translateY(-1px);
     }
 
@@ -356,6 +349,21 @@
       font-weight: 600;
     }
 
+    .video-container {
+      position: relative;
+      background: #000;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      margin: 2rem 0;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .video-placeholder {
       background: var(--warm-gray);
       height: 400px;
@@ -367,6 +375,53 @@
       font-size: 1.2rem;
       border: 2px dashed var(--light-blue);
       margin: 2rem 0;
+    }
+
+    /* Completion section styling */
+    .completion-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px var(--shadow);
+      padding: 6rem 2rem;
+      text-align: center;
+      margin: 2rem auto;
+      max-width: 600px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .completion-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+    }
+
+    .completion-section h2 {
+      font-size: 3rem;
+      color: var(--primary-blue);
+      margin-bottom: 2rem;
+      font-weight: 700;
+    }
+
+    .completion-section p {
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .completion-section::after {
+      content: '🎉';
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      font-size: 2rem;
+      opacity: 0.7;
     }
 
     /* Responsive design */
@@ -383,23 +438,17 @@
         padding: 1rem;
       }
 
-      .lang-select-content {
+      .start-content {
         padding: 2rem 1rem;
         margin: 1rem;
       }
 
-      .lang-select-content h2 {
+      .start-content h2 {
         font-size: 1.5rem;
         margin-bottom: 2rem;
       }
 
-      .language-buttons {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .lang-button {
+      .start-button {
         width: 100%;
         max-width: 300px;
       }
@@ -416,6 +465,14 @@
 
       iframe {
         height: 800px;
+      }
+
+      .completion-section h2 {
+        font-size: 2.5rem;
+      }
+
+      .completion-section p {
+        font-size: 1.1rem;
       }
     }
 
@@ -436,7 +493,7 @@
 
     /* Accessibility improvements */
     .nav-button:focus,
-    .lang-button:focus {
+    .start-button:focus {
       outline: 3px solid var(--accent-teal);
       outline-offset: 2px;
     }
@@ -444,16 +501,6 @@
     /* Smooth scrolling */
     html {
       scroll-behavior: smooth;
-    }
-
-    /* Slideshow fade animation */
-    @keyframes slideIn {
-      0% { opacity: 0; transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .slide.fade-in {
-      animation: slideIn 2s ease-out;
     }
   </style>
 </head>
@@ -473,179 +520,187 @@
   </div>
 
   <div class="container">
-    <!-- Language selector -->
-    <section id="lang-select" class="active">
-      <div class="lang-select-content">
-        <h2>Select Your Language:</h2>
-        <div class="language-buttons">
-          <button class="lang-button" onclick="showSection('english-form')">
-            English
-          </button>
-          <button class="lang-button" onclick="showSection('spanish-form')">
-            Español
-          </button>
-        </div>
+    <!-- Start page -->
+    <section id="start-page" class="active">
+      <div class="start-content">
+        <h2>Welcome!</h2>
+        <button class="start-button" onclick="showSection('form-page')">
+          Push To Get Started!
+        </button>
       </div>
     </section>
 
-    <!-- English - Form page -->
-    <section id="english-form">
+    <!-- Form page -->
+    <section id="form-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('lang-select')">
-          ← Language Select
+        <button class="nav-button" onclick="showSection('start-page')">
+          ← Back
         </button>
-        <button class="nav-button primary" onclick="showSection('english-video')">
+        <button class="nav-button primary" onclick="showSection('video-page')">
           Next →
         </button>
       </nav>
       <div class="form-section">
         <div class="form-header">
-          <h2>Diabetes Survey - English</h2>
+          <h2>Diabetes Survey</h2>
         </div>
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+          src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUMEhDUFU0TzZGWlhaWEowVEtGUFk4RU9JSC4u"
           loading="lazy">
           <div class="loading"></div> Loading survey...
         </iframe>
       </div>
     </section>
 
-    <!-- English - Video placeholder -->
-    <section id="english-video">
+    <!-- Video page -->
+    <section id="video-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('english-form')">
-          ← Back to Form
+        <button class="nav-button" onclick="showSection('form-page')">
+          ← Back to Survey
         </button>
-        <button class="nav-button" onclick="showSection('lang-select')">
-          Language Select
+        <button class="nav-button primary" onclick="showSection('post-video-page')">
+          Next →
         </button>
       </nav>
       <div class="video-section">
         <h2>Educational Video</h2>
-        <div class="video-placeholder">
-          Video content will be displayed here
+        <div class="video-container" id="video-container">
+          <!-- Video will be loaded here if available -->
         </div>
-        <p style="color: var(--text-light); font-style: italic;">
-          Thank you for completing the survey. The educational video will be available shortly.
+        <p style="color: var(--text-light); font-style: italic; margin-top: 1rem;">
+          Please watch the educational video above, then proceed to the next section.
         </p>
       </div>
     </section>
 
-    <!-- Spanish - Form page -->
-    <section id="spanish-form">
+    <!-- Post-video form -->
+    <section id="post-video-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('lang-select')">
-          ← Seleccionar Idioma
+        <button class="nav-button" onclick="showSection('video-page')">
+          ← Back to Video
         </button>
-        <button class="nav-button primary" onclick="showSection('spanish-video')">
-          Siguiente →
+        <button class="nav-button primary" onclick="showSection('completion-page')">
+          Next →
         </button>
       </nav>
       <div class="form-section">
         <div class="form-header">
-          <h2>Encuesta de Diabetes - Español</h2>
+          <h2>Post-Video Survey</h2>
         </div>
         <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSfdSxcKmvqbk-Hgc4N53I8pcS_qGoxvX2GoxuIew7JrDhQWvQ/viewform?embedded=true"
+          src="https://forms.office.com/Pages/ResponsePage.aspx?id=phT_g2vrUEK3RSG-pmJT3PLwSWawnRhBqMk13IppjTNUNkNPSkY2NFFRUDM3N0Q5UlAwRk41MldCVi4u"
           loading="lazy">
-          <div class="loading"></div> Cargando encuesta...
+          <div class="loading"></div> Loading survey...
         </iframe>
       </div>
     </section>
 
-    <!-- Spanish - Video placeholder -->
-    <section id="spanish-video">
+    <!-- Completion page -->
+    <section id="completion-page">
       <nav class="nav">
-        <button class="nav-button" onclick="showSection('spanish-form')">
-          ← Volver al Formulario
-        </button>
-        <button class="nav-button" onclick="showSection('lang-select')">
-          Seleccionar Idioma
+        <button class="nav-button" onclick="showSection('post-video-page')">
+          ← Back to Survey
         </button>
       </nav>
-      <div class="video-section">
-        <h2>Video Educativo</h2>
-        <div class="video-placeholder">
-          El contenido del video se mostrará aquí
-        </div>
-        <p style="color: var(--text-light); font-style: italic;">
-          Gracias por completar la encuesta. El video educativo estará disponible en breve.
-        </p>
+      <div class="completion-section">
+        <h2>Congratulations!</h2>
+        <p>You can exit the website!</p>
       </div>
     </section>
   </div>
 
   <script>
+    // Global variables
     let currentSlide = 0;
     let slideInterval;
+
+    // Main function to show sections
+    function showSection(id) {
+      const currentSection = document.querySelector('section.active');
+      if (currentSection) {
+        currentSection.style.opacity = '0';
+        currentSection.style.transform = 'translateY(-20px)';
+        
+        setTimeout(() => {
+          document.querySelectorAll('section').forEach(s => {
+            s.classList.remove('active');
+            s.style.opacity = '';
+            s.style.transform = '';
+          });
+          
+          const targetSection = document.getElementById(id);
+          if (targetSection) {
+            targetSection.classList.add('active');
+            targetSection.style.opacity = '0';
+            targetSection.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+              targetSection.style.opacity = '1';
+              targetSection.style.transform = 'translateY(0)';
+            }, 50);
+          }
+          
+          history.pushState(null, null, '#' + id);
+        }, 200);
+      } else {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        history.pushState(null, null, '#' + id);
+      }
+    }
 
     // Initialize slideshow
     function initializeSlideshow() {
       const slideshowContainer = document.getElementById('backgroundSlideshow');
-      
-      // Define image paths - excluding image4 as requested
-      const imagePaths = [
-        './images/image1.jpg',  // Greehey Academic & Research Campus
-        './images/image2.jpg',  // Joe R. and Teresa Lozano Long Campus
-        './images/image3.jpg',  // University Hospital Complex
-        './images/image5.jpg'   // Additional UT Health facility (skipping image4)
+      const mediaPaths = [
+        './images/image1.jpg',
+        './images/image2.jpg',
+        './images/image3.jpg',
+        './images/image5.jpg'
       ];
       
       let loadedCount = 0;
       let failedCount = 0;
       
-      imagePaths.forEach((imagePath, index) => {
+      function checkAllLoaded() {
+        if (loadedCount + failedCount === mediaPaths.length) {
+          if (loadedCount > 0) {
+            startSlideshow();
+          } else {
+            initializeFallbackSlideshow();
+          }
+        }
+      }
+      
+      mediaPaths.forEach((mediaPath, index) => {
         const img = new Image();
         
         img.onload = function() {
           loadedCount++;
           const slide = document.createElement('div');
           slide.className = 'slide';
-          slide.style.backgroundImage = `url(${imagePath})`;
+          slide.style.backgroundImage = 'url(' + mediaPath + ')';
           if (index === 0) slide.classList.add('active');
           slideshowContainer.appendChild(slide);
-          console.log(`Successfully loaded: ${imagePath}`);
-          
-          // Start slideshow when all images are processed
-          if (loadedCount + failedCount === imagePaths.length) {
-            if (loadedCount > 0) {
-              console.log(`Using ${loadedCount} GitHub images for slideshow`);
-              startSlideshow();
-            } else {
-              console.log('No images could be loaded, using themed gradients');
-              initializeFallbackSlideshow();
-            }
-          }
+          checkAllLoaded();
         };
         
         img.onerror = function() {
           failedCount++;
-          console.log(`Failed to load: ${imagePath}`);
-          
-          // Start slideshow when all images are processed
-          if (loadedCount + failedCount === imagePaths.length) {
-            if (loadedCount > 0) {
-              console.log(`Using ${loadedCount} GitHub images for slideshow`);
-              startSlideshow();
-            } else {
-              console.log('No images could be loaded, using themed gradients');
-              initializeFallbackSlideshow();
-            }
-          }
+          checkAllLoaded();
         };
         
-        img.src = imagePath;
+        img.src = mediaPath;
       });
     }
 
     function initializeFallbackSlideshow() {
       const slideshowContainer = document.getElementById('backgroundSlideshow');
-      // UT Health San Antonio themed gradient backgrounds
       const fallbackSlides = [
-        'linear-gradient(135deg, #003366 0%, #4A90E2 100%)', // UT Blue to Light Blue
-        'linear-gradient(135deg, #F26522 0%, #E55A1C 100%)', // UT Orange gradient
-        'linear-gradient(135deg, #00A0B0 0%, #003366 100%)', // Teal to UT Blue
-        'linear-gradient(135deg, #2C3E50 0%, #4A90E2 100%)'  // Dark blue to light blue
+        'linear-gradient(135deg, #003366 0%, #4A90E2 100%)',
+        'linear-gradient(135deg, #F26522 0%, #E55A1C 100%)',
+        'linear-gradient(135deg, #00A0B0 0%, #003366 100%)',
+        'linear-gradient(135deg, #2C3E50 0%, #4A90E2 100%)'
       ];
       
       fallbackSlides.forEach((gradient, index) => {
@@ -664,59 +719,38 @@
       if (slides.length <= 1) return;
       
       slideInterval = setInterval(() => {
-        // Fade out current slide
         slides[currentSlide].classList.remove('active');
-        
-        // Move to next slide
         currentSlide = (currentSlide + 1) % slides.length;
-        
-        // Fade in new slide
         slides[currentSlide].classList.add('active');
-      }, 4000); // Change every 4 seconds as requested
+      }, 4000);
     }
 
-    function showSection(id) {
-      // Add fade out effect to current section
-      const currentSection = document.querySelector('section.active');
-      if (currentSection) {
-        currentSection.style.opacity = '0';
-        currentSection.style.transform = 'translateY(-20px)';
-        
-        setTimeout(() => {
-          // Hide all sections and show requested one
-          document.querySelectorAll('section').forEach(s => {
-            s.classList.remove('active');
-            s.style.opacity = '';
-            s.style.transform = '';
-          });
-          
-          const targetSection = document.getElementById(id);
-          if (targetSection) {
-            targetSection.classList.add('active');
-            targetSection.style.opacity = '0';
-            targetSection.style.transform = 'translateY(20px)';
-            
-            // Animate in
-            setTimeout(() => {
-              targetSection.style.opacity = '1';
-              targetSection.style.transform = 'translateY(0)';
-            }, 50);
-          }
-          
-          // Update URL hash
-          history.pushState(null, null, `#${id}`);
-        }, 200);
-      } else {
-        // First load - no transition needed
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        history.pushState(null, null, `#${id}`);
-      }
+    function loadVideoForSection() {
+      const videoContainer = document.getElementById('video-container');
+      const videoPath = 'https://github.com/davidhaoyuanwang/DSD_2026/raw/main/images/video2.mp4';
+      
+      const video = document.createElement('video');
+      video.controls = true;
+      video.width = "100%";
+      video.style.maxHeight = "500px";
+      video.preload = 'metadata';
+      
+      video.onerror = function() {
+        videoContainer.innerHTML = '<div class="video-placeholder">Video will be displayed here once uploaded</div>';
+      };
+      
+      const source = document.createElement('source');
+      source.src = videoPath;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      
+      videoContainer.appendChild(video);
     }
 
-    // Handle initial load
+    // Event listeners
     window.addEventListener('load', () => {
       initializeSlideshow();
+      loadVideoForSection();
       
       const id = location.hash.replace('#', '');
       if (id && document.getElementById(id)) {
@@ -724,23 +758,11 @@
       }
     });
 
-    // Handle browser back/forward
     window.addEventListener('popstate', () => {
-      const id = location.hash.replace('#', '') || 'lang-select';
+      const id = location.hash.replace('#', '') || 'start-page';
       if (document.getElementById(id)) {
         showSection(id);
       }
-    });
-
-    // Add smooth scrolling for better UX
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add loading states for iframe
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach(iframe => {
-        iframe.addEventListener('load', function() {
-          this.style.opacity = '1';
-        });
-      });
     });
   </script>
 </body>
