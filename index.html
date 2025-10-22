@@ -234,7 +234,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-top: 2rem;
       flex-wrap: wrap;
       gap: 1rem;
     }
@@ -267,12 +267,21 @@
       background: var(--gradient-primary);
       color: var(--white);
       border-color: var(--primary-orange);
+      padding: 1.5rem 4rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 30px rgba(242, 101, 34, 0.4);
+      min-width: 300px;
+      justify-content: center;
     }
 
     .nav-button.primary:hover {
       background: var(--primary-orange);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(242, 101, 34, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(242, 101, 34, 0.5);
     }
 
     /* Form section styling */
@@ -532,14 +541,6 @@
 
     <!-- Form page -->
     <section id="form-page">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('start-page')">
-          ← Back
-        </button>
-        <button class="nav-button primary" onclick="showSection('video-page')">
-          Next →
-        </button>
-      </nav>
       <div class="form-section">
         <div class="form-header">
           <h2>Diabetes Survey</h2>
@@ -550,18 +551,18 @@
           <div class="loading"></div> Loading survey...
         </iframe>
       </div>
+      <nav class="nav">
+        <button class="nav-button primary" onclick="showSection('video-page')">
+          Next →
+        </button>
+        <button class="nav-button" onclick="showSection('start-page')">
+          ← Back
+        </button>
+      </nav>
     </section>
 
     <!-- Video page -->
     <section id="video-page">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('form-page')">
-          ← Back to Survey
-        </button>
-        <button class="nav-button primary" onclick="showSection('post-video-page')">
-          Next →
-        </button>
-      </nav>
       <div class="video-section">
         <h2>Educational Video</h2>
         <div class="video-container" id="video-container">
@@ -571,18 +572,18 @@
           Please watch the educational video above, then proceed to the next section.
         </p>
       </div>
+      <nav class="nav">
+        <button class="nav-button primary" onclick="showSection('post-video-page')">
+          Next →
+        </button>
+        <button class="nav-button" onclick="showSection('form-page')">
+          ← Back to Survey
+        </button>
+      </nav>
     </section>
 
     <!-- Post-video form -->
     <section id="post-video-page">
-      <nav class="nav">
-        <button class="nav-button" onclick="showSection('video-page')">
-          ← Back to Video
-        </button>
-        <button class="nav-button primary" onclick="showSection('completion-page')">
-          Next →
-        </button>
-      </nav>
       <div class="form-section">
         <div class="form-header">
           <h2>Post-Video Survey</h2>
@@ -593,6 +594,14 @@
           <div class="loading"></div> Loading survey...
         </iframe>
       </div>
+      <nav class="nav">
+        <button class="nav-button primary" onclick="showSection('completion-page')">
+          Next →
+        </button>
+        <button class="nav-button" onclick="showSection('video-page')">
+          ← Back to Video
+        </button>
+      </nav>
     </section>
 
     <!-- Completion page -->
