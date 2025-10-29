@@ -514,10 +514,8 @@
   </style>
 </head>
 <body>
-  <!-- Background slideshow -->
   <div class="background-slideshow" id="backgroundSlideshow">
-    <!-- Slides will be dynamically added here -->
-  </div>
+    </div>
 
   <div class="header">
     <h1>Don't Sugarcoat Diabetes!</h1>
@@ -529,7 +527,6 @@
   </div>
 
   <div class="container">
-    <!-- Start page -->
     <section id="start-page" class="active">
       <div class="start-content">
         <h2>Welcome!</h2>
@@ -539,7 +536,6 @@
       </div>
     </section>
 
-    <!-- Form page -->
     <section id="form-page">
       <div class="form-section">
         <div class="form-header">
@@ -561,13 +557,11 @@
       </nav>
     </section>
 
-    <!-- Video page -->
     <section id="video-page">
       <div class="video-section">
         <h2>Educational Video</h2>
         <div class="video-container" id="video-container">
-          <!-- Video will be loaded here if available -->
-        </div>
+          </div>
         <p style="color: var(--text-light); font-style: italic; margin-top: 1rem;">
           Please watch the educational video above, then proceed to the next section.
         </p>
@@ -582,7 +576,6 @@
       </nav>
     </section>
 
-    <!-- Post-video form -->
     <section id="post-video-page">
       <div class="form-section">
         <div class="form-header">
@@ -604,7 +597,6 @@
       </nav>
     </section>
 
-    <!-- Completion page -->
     <section id="completion-page">
       <nav class="nav">
         <button class="nav-button" onclick="showSection('post-video-page')">
@@ -622,9 +614,17 @@
     // Global variables
     let currentSlide = 0;
     let slideInterval;
+    let videoPageTimer; // Timer variable
 
     // Main function to show sections
     function showSection(id) {
+      // Clear any existing 90-second timer *every time* we change sections.
+      // This prevents the timer from firing if the user manually clicks "Back"
+      // or "Next" before the 90 seconds are up.
+      if (videoPageTimer) {
+        clearTimeout(videoPageTimer);
+      }
+
       const currentSection = document.querySelector('section.active');
       if (currentSection) {
         currentSection.style.opacity = '0';
@@ -650,11 +650,65 @@
           }
           
           history.pushState(null, null, '#' + id);
+
+          // If the new section we are showing IS the video page,
+          // start the 90-second (90,000 ms) timer.
+          if (id === 'video-page') {
+            videoPageTimer = setTimeout(() => {
+              // Timer has finished!
+              // As a safety check, make sure the user is *still* on the video page.
+              const isVideoPageActive = document.getElementById('video-page').classList.contains('active');
+              if (isVideoPageActive) {
+                // If they are, move them to the next page.
+                showSection('post-video-page');
+              }
+            }, 90000); // 90,000 milliseconds = 90 seconds
+          }
+
         }, 200);
       } else {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         history.pushState(null, null, '#' + id);
+        
+        // Also handle the timer for the *initial page load*
+        // in case the user's link has #video-page in it.
+        if (id === 'video-page') {
+          videoPageTimer = setTimeout(() => {
+            const isVideoPageActive = document.getElementById('video-page').classList.contains('active');
+            if (isVideoPageActive) {
+              showSection('post-video-page');
+            }
+          }, 90000);
+        }
+      }
+    }
+
+    /**
+    * Handles the fullscreen change event.
+    * If the user exits fullscreen AND they are on the video page,
+    * it automatically navigates to the post-video survey page.
+    */
+    function handleFullscreenChange() {
+      const isVideoPageActive = document.getElementById('video-page').classList.contains('active');
+      
+      const isExitingFullscreen = !document.fullscreenElement &&
+                                !document.webkitFullscreenElement &&
+                                !document.mozFullScreenElement &&
+                                !document.msFullscreenElement;
+
+      // If we are exiting fullscreen AND we're on the video page...
+      if (isExitingFullscreen && isVideoPageActive) {
+        
+        // The fullscreen exit happened first!
+        // We MUST clear the 90-second timer so it doesn't
+        // try to navigate the user *again* later.
+        if (videoPageTimer) {
+          clearTimeout(videoPageTimer);
+        }
+
+        // ...then automatically move to the next page.
+        showSection('post-video-page');
       }
     }
 
@@ -664,7 +718,7 @@
       const mediaPaths = [
         './images/image1.jpg',
         './images/image2.jpg',
-        './images/image3.jpg',
+        './images.jpg',
         './images/image5.jpg'
       ];
       
@@ -773,6 +827,12 @@
         showSection(id);
       }
     });
+
+    // Add event listeners for fullscreen changes to trigger the auto-navigation.
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
   </script>
 </body>
 </html>
