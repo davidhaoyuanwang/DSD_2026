@@ -619,14 +619,23 @@
     // Main function to show sections
     function showSection(id) {
       // Clear any existing 90-second timer *every time* we change sections.
-      // This prevents the timer from firing if the user manually clicks "Back"
-      // or "Next" before the 90 seconds are up.
       if (videoPageTimer) {
         clearTimeout(videoPageTimer);
       }
 
       const currentSection = document.querySelector('section.active');
       if (currentSection) {
+        
+        // --- NEW CODE START ---
+        // If we are leaving the video page, find the video and pause it.
+        if (currentSection.id === 'video-page') {
+          const video = currentSection.querySelector('video');
+          if (video && !video.paused) {
+            video.pause();
+          }
+        }
+        // --- NEW CODE END ---
+
         currentSection.style.opacity = '0';
         currentSection.style.transform = 'translateY(-20px)';
         
@@ -718,8 +727,8 @@
       const mediaPaths = [
         './images/image1.jpg',
         './images/image2.jpg',
-        './images.jpg',
-        './images/image5.jpg'
+        './images/image3.jpg',
+        './imagesCategories/image5.jpg'
       ];
       
       let loadedCount = 0;
